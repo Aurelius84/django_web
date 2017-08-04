@@ -4,7 +4,7 @@ from django.db import models
 
 
 class YouthForumData(models.Model):
-    question_text = models.CharField(max_length=2000)
+    question_text = models.TextField()
     pub_date = models.DateTimeField('date published')
     TAGS = {
         "党建团建": ["党史党章", "团章团史", "入党入团", "党务工作", "团务工作", "干部培训", "基层团建"],

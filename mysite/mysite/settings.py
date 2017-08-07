@@ -29,9 +29,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    # 'django_admin_bootstrapped',  # 放在admin前面
+    'smart_selects',
     'corpustag.apps.CorpustagConfig',
-    # 'bootstrap3',  # 放在admin前面
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -121,6 +120,7 @@ USE_L10N = True
 
 USE_TZ = True
 
+USE_DJANGO_JQUERY = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 STATIC_URL = '/static/'

@@ -40,7 +40,7 @@ class YouthSecondCateAdmin(admin.ModelAdmin):
     list_editable = ('name',)
     # 定义列表页右侧过滤字段
     list_filter = [
-        'name',
+        'first_class',
     ]
     # 列表页每页显示数据量
     list_per_page = 15

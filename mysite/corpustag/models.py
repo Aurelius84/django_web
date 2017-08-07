@@ -22,11 +22,14 @@ TAGS = {
 
 class YouthFirstCate(models.Model):
     FIRST_TAGS = tuple([(k, k) for k in TAGS] + [('unknown', 'unknown')])
-    name = models.CharField(max_length=255, choices=FIRST_TAGS, default='unknown')
+    name = models.CharField(max_length=255, choices=FIRST_TAGS, default='unknown', unique=True)
     pub_date = models.DateTimeField('date published')
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        ordering = ['name']
 
 
 class YouthSecondCate(models.Model):
@@ -34,15 +37,18 @@ class YouthSecondCate(models.Model):
         [v, v] for v in val
     ]) for k, val in TAGS.items()] + [('unknown', 'unknown')]
     first_class = models.ForeignKey(YouthFirstCate)
-    name = models.CharField(max_length=255, choices=SECOND_TAGS, default='unknown')
+    name = models.CharField(max_length=255, choices=SECOND_TAGS, default='unknown', unique=True)
     pub_date = models.DateTimeField('date published')
 
     def __str__(self):
         return self.name
 
+    class Meta:
+        ordering = ['name']
+
 
 class YouthForumData(models.Model):
-    question_text = models.TextField()
+    question_text = models.TextField(max_length=1000, unique=True)
     pub_date = models.DateTimeField('date published')
     first_class = models.ForeignKey(YouthFirstCate)
     second_class = ChainedForeignKey(
@@ -55,7 +61,7 @@ class YouthForumData(models.Model):
 
     def was_tagged_manually(self):
 
-        return 'unknown' not in [self.first_class, self.second_class]
+        return 'unknown' not in [self.first_class.name, self.second_class.name]
 
     was_tagged_manually.admin_order_field = 'pub_date'
     was_tagged_manually.boolean = True
@@ -63,3 +69,6 @@ class YouthForumData(models.Model):
 
     def __str__(self):
         return self.question_text
+
+    class Meta:
+        ordering = ['question_text']

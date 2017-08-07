@@ -1,5 +1,6 @@
 from django.db import models
 from smart_selects.db_fields import ChainedForeignKey
+import django.utils.timezone as timezone
 
 # Create your models here.
 
@@ -22,14 +23,15 @@ TAGS = {
 
 class YouthFirstCate(models.Model):
     FIRST_TAGS = tuple([(k, k) for k in TAGS] + [('unknown', 'unknown')])
-    name = models.CharField(max_length=255, choices=FIRST_TAGS, default='unknown', unique=True)
-    pub_date = models.DateTimeField('date published')
+    name = models.CharField(max_length=255, choices=FIRST_TAGS, default='unknown', unique=True, verbose_name='一级类目')
+    pub_date = models.DateTimeField('date published', default=timezone.now)
 
     def __str__(self):
         return self.name
 
     class Meta:
         ordering = ['name']
+        verbose_name_plural = '青年之声一级类目关系表'
 
 
 class YouthSecondCate(models.Model):
@@ -37,26 +39,28 @@ class YouthSecondCate(models.Model):
         [v, v] for v in val
     ]) for k, val in TAGS.items()] + [('unknown', 'unknown')]
     first_class = models.ForeignKey(YouthFirstCate)
-    name = models.CharField(max_length=255, choices=SECOND_TAGS, default='unknown', unique=True)
-    pub_date = models.DateTimeField('date published')
+    name = models.CharField(max_length=255, choices=SECOND_TAGS, default='unknown', unique=True, verbose_name='二级类目')
+    pub_date = models.DateTimeField('date published', default=timezone.now)
 
     def __str__(self):
         return self.name
 
     class Meta:
         ordering = ['name']
+        verbose_name_plural = '青年之声二级类目关系表'
 
 
 class YouthForumData(models.Model):
-    question_text = models.TextField(max_length=1000, unique=True)
-    pub_date = models.DateTimeField('date published')
-    first_class = models.ForeignKey(YouthFirstCate)
+    question_text = models.TextField(max_length=1000, unique=True, verbose_name='问题文本')
+    pub_date = models.DateTimeField('date published', default=timezone.now)
+    first_class = models.ForeignKey(YouthFirstCate, verbose_name='一级类目')
     second_class = ChainedForeignKey(
         YouthSecondCate,
         chained_field="first_class",
         chained_model_field="first_class",
         show_all=False,
         auto_choose=True,
+        verbose_name='二级类目',
         sort=True)
 
     def was_tagged_manually(self):
@@ -65,10 +69,11 @@ class YouthForumData(models.Model):
 
     was_tagged_manually.admin_order_field = 'pub_date'
     was_tagged_manually.boolean = True
-    was_tagged_manually.short_description = 'already tagged?'
+    was_tagged_manually.short_description = '是否已标注?'
 
     def __str__(self):
         return self.question_text
 
     class Meta:
         ordering = ['question_text']
+        verbose_name_plural = '青年之声人工标注语料库'

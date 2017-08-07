@@ -1,6 +1,7 @@
 from django.db import models
 from smart_selects.db_fields import ChainedForeignKey
 import django.utils.timezone as timezone
+import datetime
 
 # Create your models here.
 
@@ -23,11 +24,25 @@ TAGS = {
 
 class YouthFirstCate(models.Model):
     FIRST_TAGS = tuple([(k, k) for k in TAGS] + [('unknown', 'unknown')])
-    name = models.CharField(max_length=255, choices=FIRST_TAGS, default='unknown', unique=True, verbose_name='一级类目')
-    pub_date = models.DateTimeField('date published', default=timezone.now)
+    name = models.CharField(
+        max_length=255,
+        choices=FIRST_TAGS,
+        default='unknown',
+        unique=True,
+        verbose_name='一级类目')
+    timestamp = timezone.now
+    created = models.DateTimeField('创建时间', default=timestamp)
+    modified = models.DateTimeField('修改时间', default=timestamp)
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.created = timezone.now()
+        self.modified = timezone.now()
+        return super(YouthFirstCate, self).save(*args, **kwargs)
 
     class Meta:
         ordering = ['name']
@@ -35,15 +50,28 @@ class YouthFirstCate(models.Model):
 
 
 class YouthSecondCate(models.Model):
-    SECOND_TAGS = [(k, [
-        [v, v] for v in val
-    ]) for k, val in TAGS.items()] + [('unknown', 'unknown')]
+    SECOND_TAGS = [(k, [[v, v] for v in val])
+                   for k, val in TAGS.items()] + [('unknown', 'unknown')]
     first_class = models.ForeignKey(YouthFirstCate)
-    name = models.CharField(max_length=255, choices=SECOND_TAGS, default='unknown', unique=True, verbose_name='二级类目')
-    pub_date = models.DateTimeField('date published', default=timezone.now)
+    name = models.CharField(
+        max_length=255,
+        choices=SECOND_TAGS,
+        default='unknown',
+        unique=True,
+        verbose_name='二级类目')
+    timestamp = timezone.now
+    created = models.DateTimeField('创建时间', default=timestamp)
+    modified = models.DateTimeField('修改时间', default=timestamp)
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.created = timezone.now()
+        self.modified = timezone.now()
+        return super(YouthSecondCate, self).save(*args, **kwargs)
 
     class Meta:
         ordering = ['name']
@@ -51,9 +79,16 @@ class YouthSecondCate(models.Model):
 
 
 class YouthForumData(models.Model):
-    question_text = models.TextField(max_length=1000, unique=True, verbose_name='问题文本')
-    pub_date = models.DateTimeField('date published', default=timezone.now)
+    question_text = models.TextField(max_length=1000, verbose_name='问题文本')
+    timestamp = timezone.now
+    created = models.DateTimeField('创建时间', default=timestamp)
+    modified = models.DateTimeField('修改时间', default=timestamp)
     first_class = models.ForeignKey(YouthFirstCate, verbose_name='一级类目')
+    mlHit = models.CharField(
+        max_length=10,
+        choices=[("T", "Right"), ("F", "Wrong"), ("unknown", "unknown")],
+        default='unknown',
+        verbose_name='机器分类')
     second_class = ChainedForeignKey(
         YouthSecondCate,
         chained_field="first_class",
@@ -64,16 +99,33 @@ class YouthForumData(models.Model):
         sort=True)
 
     def was_tagged_manually(self):
+        """标识是否为人工标注"""
 
         return 'unknown' not in [self.first_class.name, self.second_class.name]
 
-    was_tagged_manually.admin_order_field = 'pub_date'
+    was_tagged_manually.admin_order_field = 'modified'
     was_tagged_manually.boolean = True
-    was_tagged_manually.short_description = '是否已标注?'
+    was_tagged_manually.short_description = '已人工标注?'
+
+    def was_check_manually(self):
+        print(self.mlHit)
+        """标识是否人工纠正过"""
+        return "unknown" != self.mlHit
+
+    was_check_manually.admin_order_field = 'modified'
+    was_check_manually.boolean = True
+    was_check_manually.short_description = '已人工审核?'
 
     def __str__(self):
         return self.question_text
 
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.created = timezone.now()
+        self.modified = timezone.now()
+        return super(YouthForumData, self).save(*args, **kwargs)
+
     class Meta:
-        ordering = ['question_text']
+        ordering = ['modified']
         verbose_name_plural = '青年之声人工标注语料库'

@@ -5,9 +5,9 @@ from .models import YouthForumData, YouthFirstCate, YouthSecondCate
 
 class YouthFirstCateAdmin(admin.ModelAdmin):
     # 定义列表页显示元数据字段
-    list_display = ('name', 'pub_date',)
+    list_display = ('name', 'modified',)
     # 定义可链接元数据字段
-    list_display_links = ('pub_date', )
+    list_display_links = ('modified', )
     # 定义再列表页可编辑字段
     list_editable = ('name', )
     # 定义列表页右侧过滤字段
@@ -25,7 +25,7 @@ class YouthFirstCateAdmin(admin.ModelAdmin):
             'fields': ['name', ]
         }),
         ('Date information', {
-            'fields': ['pub_date'],
+            'fields': ['created', 'modified'],
             'classes': ['grp-collapse grp-open']
         }),
     ]
@@ -33,9 +33,9 @@ class YouthFirstCateAdmin(admin.ModelAdmin):
 
 class YouthSecondCateAdmin(admin.ModelAdmin):
     # 定义列表页显示元数据字段
-    list_display = ('first_class', 'name', 'pub_date',)
+    list_display = ('first_class', 'name', 'modified',)
     # 定义可链接元数据字段
-    list_display_links = ('pub_date', )
+    list_display_links = ('modified', )
     # 定义再列表页可编辑字段
     list_editable = ('name',)
     # 定义列表页右侧过滤字段
@@ -53,7 +53,7 @@ class YouthSecondCateAdmin(admin.ModelAdmin):
             'fields': ['first_class', 'name', ]
         }),
         ('Date information', {
-            'fields': ['pub_date'],
+            'fields': ['created', 'modified'],
             'classes': ['grp-collapse grp-open']
         }),
     ]
@@ -61,15 +61,16 @@ class YouthSecondCateAdmin(admin.ModelAdmin):
 
 class YouthForumDataAdmin(admin.ModelAdmin):
     # 定义列表页显示元数据字段
-    list_display = ('question_text', 'first_class', 'second_class',
-                    'was_tagged_manually')
+    list_display = ('question_text', 'first_class', 'second_class', 'mlHit',
+                    'was_tagged_manually', 'was_check_manually')
     # 定义可链接元数据字段
     list_display_links = ('question_text', )
     # 定义再列表页可编辑字段
-    list_editable = ('first_class', 'second_class', )
+    list_editable = ('first_class', 'second_class', 'mlHit')
     # 定义列表页右侧过滤字段
     list_filter = [
         'first_class',
+        'mlHit',
     ]
     # 列表页每页显示数据量
     list_per_page = 15
@@ -79,10 +80,10 @@ class YouthForumDataAdmin(admin.ModelAdmin):
     ]
     fieldsets = [
         (None, {
-            'fields': ['question_text', 'first_class', 'second_class']
+            'fields': ['question_text', 'first_class', 'second_class', 'mlHit']
         }),
         ('Date information', {
-            'fields': ['pub_date'],
+            'fields': ['created', 'modified'],
             'classes': ['grp-collapse grp-open']
         }),
     ]

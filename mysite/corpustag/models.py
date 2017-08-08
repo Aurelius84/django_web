@@ -108,7 +108,6 @@ class YouthForumData(models.Model):
     was_tagged_manually.short_description = '已人工标注?'
 
     def was_check_manually(self):
-        print(self.mlHit)
         """标识是否人工纠正过"""
         return "unknown" != self.mlHit
 

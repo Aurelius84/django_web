@@ -22,4 +22,8 @@ urlpatterns = [
     url(r'^corpustag/', include('corpustag.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^chaining/', include('smart_selects.urls')),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+]
+
+if settings.DEBUG:
+    urlpatterns += static(
+        settings.STATIC_URL, document_root=settings.STATIC_ROOT)

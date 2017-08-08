@@ -22,9 +22,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '#&8&0+jxktu=%qh2c5vlb@kge63kf#vq^fcdwt!@mp@@*ttu&6'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '10.108.225.240']
 
 # Application definition
 
@@ -123,5 +123,6 @@ USE_TZ = True
 USE_DJANGO_JQUERY = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
-STATIC_ROOT = os.path.join(BASE_DIR, "static/")
-STATIC_URL = '/static/'
+# STATIC_ROOT = '/var/www/mysite/static'
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATIC_URL = '/admin/'

@@ -1,6 +1,7 @@
 from django.db import models
 from smart_selects.db_fields import ChainedForeignKey
 import django.utils.timezone as timezone
+import hashlib
 
 # Create your models here.
 
@@ -78,7 +79,10 @@ class YouthSecondCate(models.Model):
 
 
 class YouthForumData(models.Model):
-    question_text = models.TextField(max_length=1000, verbose_name='问题文本')
+    question_text = models.TextField(max_length=800, verbose_name='问题文本')
+    # make question_text unique
+    question_hash = models.CharField(max_length=32, unique=True)
+
     timestamp = timezone.now
     created = models.DateTimeField('创建时间', default=timestamp)
     modified = models.DateTimeField('修改时间', default=timestamp)
@@ -122,6 +126,10 @@ class YouthForumData(models.Model):
         if not self.id:
             self.created = timezone.now()
         self.modified = timezone.now()
+        m = hashlib.md5()
+        m.update(self.question_text.encode('utf8'))
+        # 十六进制
+        self.question_hash = m.hexdigest()
         return super(YouthForumData, self).save(*args, **kwargs)
 
     class Meta:

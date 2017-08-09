@@ -24,7 +24,7 @@ SECRET_KEY = '#&8&0+jxktu=%qh2c5vlb@kge63kf#vq^fcdwt!@mp@@*ttu&6'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '10.108.225.240']
+ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', '10.108.225.240']
 
 # Application definition
 
@@ -112,7 +112,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en_us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
@@ -125,4 +125,5 @@ USE_DJANGO_JQUERY = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 # STATIC_ROOT = '/var/www/mysite/static'
 STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+# STATIC_ROOT = '/home/kevin/Documents/Project/django_web/mysite/static/'
 STATIC_URL = '/static/'

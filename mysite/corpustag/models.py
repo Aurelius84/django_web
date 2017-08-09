@@ -1,7 +1,6 @@
 from django.db import models
 from smart_selects.db_fields import ChainedForeignKey
 import django.utils.timezone as timezone
-import datetime
 
 # Create your models here.
 

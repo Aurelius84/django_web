@@ -57,7 +57,7 @@ class YouthSecondCate(models.Model):
         max_length=255,
         choices=SECOND_TAGS,
         default='unknown',
-        unique=True,
+        # unique=True,
         verbose_name='二级类目')
     timestamp = timezone.now
     created = models.DateTimeField('创建时间', default=timestamp)
@@ -75,6 +75,7 @@ class YouthSecondCate(models.Model):
 
     class Meta:
         ordering = ['name']
+        unique_together = (("first_class", "name"))
         verbose_name_plural = '青年之声二级类目关系表'
 
 

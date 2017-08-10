@@ -77,6 +77,8 @@ class YouthForumDataAdmin(admin.ModelAdmin):
     # 定义列表页搜索候选元数据
     search_fields = [
         'question_text',
+        # foreign_key__related_fieldname
+        'second_class__name',
     ]
     fieldsets = [
         (None, {

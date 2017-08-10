@@ -18,10 +18,13 @@ class MysqlDB(object):
         self.port = port
         self.passwd = passwd
         self.table = table
+        self.user = user
+        # 自动连接数据库
+        self.connect()
 
     def connect(self):
         try:
-            self.conn = pymysql.connect(host=self.host, port=self.port, user=self.user, passwd=self.passwd, bd=self.database, charset='utf-8')
+            self.conn = pymysql.connect(host=self.host, port=self.port, user=self.user, passwd=self.passwd, db=self.database, charset='utf8mb4')
             self.cursor = self.conn.cursor()
         except Exception as e:
             print(e)
@@ -43,7 +46,7 @@ class MysqlDB(object):
             self.conn.commit()
         except Exception as e:
             # 发生错误时回滚
-            self.database.rollback()
+            self.conn.rollback()
             print(e)
             print(sql + 'execute failed.')
 

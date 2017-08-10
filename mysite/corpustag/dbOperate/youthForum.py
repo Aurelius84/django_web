@@ -51,7 +51,7 @@ def readExcelByCol(file_name, col):
 
 if __name__ == '__main__':
     cates = json.load(open('./classConf.json', 'r'))
-    datas, _labels = readExcelByCol('./corpus/人文_新二级.xlsx', [0, 3])
+    datas, _labels = readExcelByCol('./corpus/人文_新二级.xlsx', [0, 2])
     datas = [x.split('@@@')[-1] for x in datas]
     print(len(_labels))
     labels = [

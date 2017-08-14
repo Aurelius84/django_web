@@ -69,6 +69,6 @@ open chrome and visit **http://your_ip:88/admin**
 ```
 ### Interface
 - **Login**
-![Login](https://github.com/KillersDeath/django_web/blob/master/mysite/corpustag/ico.png?raw=true)
+![Login](https://github.com/KillersDeath/django_web/blob/master/mysite/login.png?raw=true)
 - **Corpus tagging**
 ![tagging](https://github.com/KillersDeath/django_web/blob/master/mysite/corpustag/ico.png?raw=true)

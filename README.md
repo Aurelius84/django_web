@@ -72,3 +72,9 @@ open chrome and visit **http://your_ip:88/admin**
 ![Login](https://github.com/KillersDeath/django_web/blob/master/mysite/login.png?raw=true)
 - **Corpus tagging**
 ![tagging](https://github.com/KillersDeath/django_web/blob/master/mysite/corpustag/ico.png?raw=true)
+
+### License
+
+GNU (for details, please refer to [LICENSE](https://github.com/KillersDeath/django_web/blob/master/LICENSE))
+
+Copyright (c) 2017 LiujieZhang

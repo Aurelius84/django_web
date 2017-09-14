@@ -61,12 +61,18 @@ class YouthSecondCateAdmin(admin.ModelAdmin):
 
 class YouthForumDataAdmin(admin.ModelAdmin):
     # 定义列表页显示元数据字段
-    list_display = ('question_text', 'first_class', 'second_class', 'mlHit',
-                    'was_tagged_manually', 'was_check_manually')
+    list_display = ('question_text',
+                    'first_class',
+                    'second_class',
+                    'tags'
+                    # 'mlHit',
+                    'was_tagged_manually',
+                    'was_check_manually'
+                    )
     # 定义可链接元数据字段
     list_display_links = ('question_text', )
     # 定义再列表页可编辑字段
-    list_editable = ('first_class', 'second_class', 'mlHit')
+    list_editable = ('first_class', 'second_class', 'tags')
     # 定义列表页右侧过滤字段
     list_filter = [
         'first_class',
@@ -79,10 +85,11 @@ class YouthForumDataAdmin(admin.ModelAdmin):
         'question_text',
         # foreign_key__related_fieldname
         'second_class__name',
+        'tags__name'
     ]
     fieldsets = [
         (None, {
-            'fields': ['question_text', 'first_class', 'second_class', 'mlHit']
+            'fields': ['question_text', 'first_class', 'second_class', 'tags', 'mlHit']
         }),
         ('Date information', {
             'fields': ['created', 'modified'],

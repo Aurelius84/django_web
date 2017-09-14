@@ -101,7 +101,7 @@ class YouthForumData(models.Model):
         auto_choose=True,
         verbose_name='二级类目',
         sort=True)
-    tags = models.CharField(max_length=100, default='', verbose_name='标签')
+    tags = models.CharField(max_length=30, default='None', verbose_name='标签')
 
     def was_tagged_manually(self):
         """标识是否为人工标注"""

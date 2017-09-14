@@ -4,6 +4,7 @@ from mysql import MysqlDB
 import hashlib
 import xlrd
 import json
+from collections import Counter
 
 
 def insertDB(question, first_cate, second_cate):
@@ -51,31 +52,49 @@ def readExcelByCol(file_name, col):
 
 if __name__ == '__main__':
     cates = json.load(open('./classConf.json', 'r'))
-    datas, _labels = readExcelByCol('./corpus/人文_新二级.xlsx', [0, 2])
+    datas, first_class, labels = readExcelByCol('./corpus/train_corpus/创业.xlsx', [0, 1, 3])
     datas = [x.split('@@@')[-1] for x in datas]
-    print(len(_labels))
+    print(len(labels))
+    # for i in range(len(first_class)):
+    #     if first_class[i] != 'SH':
+    #         labels[i] = 'unknown'
+    # first_class = '理想信念'
+    first_class = ['CY' if x == '' else x for x in first_class]
+    print(Counter(first_class))
+    labels = ['' if str(int(lbl)) == '6' else lbl for lbl in labels]
     labels = [
-        cates['RW'][str(int(lbl))]
-        if lbl not in ['', '  '] and str(int(lbl)) != '0' else 'unknown' for lbl in _labels
+        cates[first_class[i]][str(int(lbl))]
+        if lbl not in ['', '.'] else 'unknown'
+        for i, lbl in enumerate(labels)
+    ]
+    first_class = [
+        cates[x]['CN'] for x in first_class
     ]
     # first_class = cates['CY']['CN']
-    first_class = [
-        cates['RW']['CN'] if lbl in ['', '  '] or str(int(lbl)) != '0' else 'unknown'
-        for lbl in _labels
-    ]
-    # print(datas[-10:])
-    # print(labels[-10:])
+
+    print(Counter(first_class))
+    print(Counter(labels))
+    assert len(first_class) == len(labels)
+    print(datas[-10:])
+    print(labels[-10:])
     # print(first_class[-10:])
     # print(len([i for i, lbl in enumerate(first_class) if lbl == 'unknown']))
     # exit()
     questionTable = MysqlDB('corpustag_youthforumdata')
     firstCateTable = MysqlDB('corpustag_youthfirstcate')
     secondCateTable = MysqlDB('corpustag_youthsecondcate')
+    # second_class_id = secondCateTable.query(
+    #     "select id from corpustag_youthsecondcate where name='{}'".format(
+    #         'unknown'))[0][0]
+    # print(second_class_id)
+    # exit()
     for i, question in enumerate(datas):
         try:
             insertDB(question, first_class[i], labels[i])
         except Exception as e:
             print(e)
+            print(first_class[i])
+            print(labels[i])
 
     questionTable.close()
     firstCateTable.close()

@@ -64,7 +64,7 @@ class YouthForumDataAdmin(admin.ModelAdmin):
     list_display = ('question_text',
                     'first_class',
                     'second_class',
-                    'tags'
+                    'tags',
                     # 'mlHit',
                     'was_tagged_manually',
                     'was_check_manually'

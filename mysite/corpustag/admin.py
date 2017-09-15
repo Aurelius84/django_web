@@ -85,7 +85,7 @@ class YouthForumDataAdmin(admin.ModelAdmin):
         'question_text',
         # foreign_key__related_fieldname
         'second_class__name',
-        'tags__name'
+        'tags'
     ]
     fieldsets = [
         (None, {

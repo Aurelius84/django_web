@@ -1,5 +1,5 @@
 # mysql setting
-HOST = '127.0.0.1'
+HOST = '10.108.216.85'
 PORT = 3306
 USER = 'corpusdb'
 PASSWD = '123456'

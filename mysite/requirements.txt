@@ -1,4 +1,4 @@
 django_smart_selects==1.5.2
 PyMySQL==0.7.11
-Django==1.11.4
+Django==1.11.15
 xlrd==1.0.0
